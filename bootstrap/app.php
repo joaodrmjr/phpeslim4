@@ -4,10 +4,7 @@
 use \DI\Container;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
-use Slim\Factory\AppFactory;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request; 
-
+use DI\Bridge\Slim\Bridge as SlimAppFactory;
 
 require __DIR__ . "/../vendor/autoload.php";
 
@@ -19,10 +16,7 @@ $container = new Container;
 $settings = require __DIR__ . "/../app/config.php";
 $settings($container);
 
-
-AppFactory::setContainer($container);
-
-$app = AppFactory::create();
+$app = SlimAppFactory::create($container);
 
 
 $middleware = require __DIR__ . "/../app/middleware.php";
@@ -36,6 +30,9 @@ $container->set("view", function ($app) {
 $app->add(TwigMiddleware::create($app, $container->get("view")));
 
 
+$container->set("WebController", function ($container) {
+	return new \App\Controllers\WebController($container);
+});
 
 $routes = require __DIR__ . "/../app/routes.php";
 $routes($app);

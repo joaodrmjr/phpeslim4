@@ -8,9 +8,5 @@ use Slim\App;
 return function (App $app) {
 	
 
-	$app->get("/", function (Request $request, Response $response, $args) {
-		return $this->get("view")->render($response, "auth/login.twig", [
-			'name' => "João"
-		]);
-	});
+	$app->get("/", "WebController:loginPage");
 };
