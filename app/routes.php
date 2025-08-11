@@ -19,4 +19,7 @@ return function (App $app) {
 
 	$app->get("/register", "AuthController:registerPage")->setName("registerPage");
 	$app->post("/register", "AuthController:postRegister");
+
+
+	$app->get("/logout", "AuthController:logout")->setName("logout");
 };

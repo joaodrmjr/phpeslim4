@@ -59,6 +59,12 @@ class Auth {
 	}
 
 
+	public function logout()
+	{
+		unset($_SESSION[$this->config["auth_session"]]);
+	}
+
+
 	public function check(): int
 	{
 		$s = $_SESSION[$this->config["auth_session"]] ?? null;
@@ -70,9 +76,10 @@ class Auth {
 		return self::NONE;
 	}
 
-	public function user(): User
+	public function user(): ?User
 	{
-		return User::find($_SESSION[$this->config["auth_session"]]);
+		$s = $_SESSION[$this->config["auth_session"]] ?? null;
+		return User::find($s);
 	}
 
 	public function error()

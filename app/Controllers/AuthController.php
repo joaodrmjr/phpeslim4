@@ -56,13 +56,22 @@ class AuthController extends Controller {
 			return redirect($request, $response, "registerPage");
 		}
 
-		User::create([
+		$user = User::create([
 			"username" => $data["username"],
 			"email" => $data["email"],
 			"password" => password_hash($data["password"], PASSWORD_DEFAULT)
 		]);
 
+		$this->container->get("flash")->addMessage("success", "Usuário cadastrado com sucesso, insira seus dados para realizar o Login");
 		
 		return redirect($request, $response, "home");
+	}
+
+
+	public function logout($request, $response)
+	{
+		$this->container->get("auth")->logout();
+		$this->container->get("flash")->addMessage("info", "Sessão encerrada com sucesso!");
+		return redirect($request, $response, "loginPage");
 	}
 }
