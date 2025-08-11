@@ -12,6 +12,11 @@ use Slim\Views\TwigMiddleware;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+
+use Respect\Validation\Factory;
+
+
+
 require __DIR__ . "/../vendor/autoload.php";
 
 
@@ -67,6 +72,14 @@ $container->set("AuthController", function ($container) {
 // middlewares
 $app->add(new App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new App\Middleware\OldInputMiddleware($container));
+
+
+// respect validation custom
+Factory::setDefaultInstance(
+    (new Factory())
+        ->withRuleNamespace('App\\Validation\\Rules')
+        ->withExceptionNamespace('App\\Validation\\Exceptions')
+);
 
 
 $routes = require __DIR__ . "/../app/routes.php";

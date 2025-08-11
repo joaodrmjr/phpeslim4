@@ -19,7 +19,8 @@ class OldInputMiddleware implements MiddlewareInterface {
 
 	public function process(Request $request, RequestHandler $handler): Response
 	{
-		$this->container->get("view")->getEnvironment()->addGlobal("old", $_SESSION["old"]);
+		if (isset($_SESSION["old"]))
+			$this->container->get("view")->getEnvironment()->addGlobal("old", $_SESSION["old"]);
 		$_SESSION['old'] = $request->getParsedBody();
 
 		$response = $handler->handle($request);
