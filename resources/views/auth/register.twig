@@ -7,6 +7,21 @@
 
 <a href="{{ url_for('home') }}">Voltar pra pagina Inicial</a>
 
-
+<form action="{{ url_for('registerPage') }}" method="post">
+	<div class="mb-3">
+		<label class="form-label">Username</label>
+		<input type="text" class="form-control" name="username">
+	</div>
+	<div class="mb-3">
+		<label class="form-label">Email</label>
+		<input type="email" name="email" class="form-control" aria-describedby="emailHelp">
+		<div id="emailHelp" class="form-text">Nunca compartilharemos seu e-mail com mais ninguém.</div>
+	</div>
+	<div class="mb-3">
+		<label class="form-label">Senha</label>
+		<input type="password" name="password" class="form-control">
+	</div>
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 {% endblock %}
