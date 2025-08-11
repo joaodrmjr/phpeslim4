@@ -8,5 +8,5 @@ use Slim\App;
 return function (App $app) {
 	
 
-	$app->get("/", "WebController:loginPage");
+	$app->get("/", "WebController:loginPage")->setName("home");
 };

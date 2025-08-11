@@ -11,6 +11,8 @@ return function (App $app) {
 	$settings = $app->getContainer()->get("settings");
 
 
+	$app->addRoutingMiddleware();
+
 	$app->addErrorMiddleware(
 		$settings["displayErrorDetails"],
 		$settings["logErrors"],

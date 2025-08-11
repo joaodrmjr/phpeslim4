@@ -2,9 +2,11 @@
 
 
 use \DI\Container;
+use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
-use DI\Bridge\Slim\Bridge as SlimAppFactory;
+
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 require __DIR__ . "/../vendor/autoload.php";
 
@@ -16,11 +18,26 @@ $container = new Container;
 $settings = require __DIR__ . "/../app/config.php";
 $settings($container);
 
-$app = SlimAppFactory::create($container);
+
+AppFactory::setContainer($container);
+
+$app = AppFactory::create();
+
 
 
 $middleware = require __DIR__ . "/../app/middleware.php";
 $middleware($app);
+
+// database
+$capsule = new Capsule();
+$capsule->addConnection($container->get("settings")["db"]);
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
+
+$container->set("db", function ($app) use ($capsule) {
+	return $capsule;
+});
 
 
 $container->set("view", function ($app) {

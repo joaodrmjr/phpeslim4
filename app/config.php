@@ -17,6 +17,17 @@ return function (ContainerInterface $container) {
 					'auto_reload' => true
 				]
 
+			],
+
+			"db" => [
+				"driver" => "mysql",
+				"host" => "localhost",
+				"database" => "slim4",
+				"username" => "root",
+				"password" => "",
+				"charset" => "utf8",
+				"collation" => "utf8_unicode_ci",
+				"prefix" => ""
 			]
 		];
 	});
