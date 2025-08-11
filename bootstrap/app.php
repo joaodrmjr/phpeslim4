@@ -12,7 +12,7 @@ use Slim\Views\TwigMiddleware;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-
+use Slim\Csrf\Guard;
 use Respect\Validation\Factory;
 
 
@@ -32,6 +32,8 @@ AppFactory::setContainer($container);
 
 $app = AppFactory::create();
 
+
+$responseFactory = $app->getResponseFactory();
 
 
 $middleware = require __DIR__ . "/../app/middleware.php";
@@ -60,6 +62,10 @@ $container->set("validation", function () {
 	return new App\Validation\Validator();
 });
 
+$container->set("csrf", function () use ($responseFactory) {
+	return new Guard($responseFactory);
+});
+
 
 $container->set("WebController", function ($container) {
 	return new \App\Controllers\WebController($container);
@@ -72,6 +78,7 @@ $container->set("AuthController", function ($container) {
 // middlewares
 $app->add(new App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new App\Middleware\OldInputMiddleware($container));
+$app->add(new App\Middleware\CsrfViewMiddleware($container));
 
 
 // respect validation custom
@@ -80,6 +87,9 @@ Factory::setDefaultInstance(
         ->withRuleNamespace('App\\Validation\\Rules')
         ->withExceptionNamespace('App\\Validation\\Exceptions')
 );
+
+
+$app->add("csrf");
 
 
 $routes = require __DIR__ . "/../app/routes.php";
