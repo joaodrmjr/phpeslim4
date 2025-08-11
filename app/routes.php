@@ -15,6 +15,7 @@ return function (App $app) {
 
 
 	$app->get("/login", "AuthController:loginPage")->setName("loginPage");
+	$app->post("/login", "AuthController:postLogin");
 
 	$app->get("/register", "AuthController:registerPage")->setName("registerPage");
 	$app->post("/register", "AuthController:postRegister");

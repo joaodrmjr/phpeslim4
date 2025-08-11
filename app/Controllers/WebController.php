@@ -12,7 +12,7 @@ class WebController extends Controller {
 
 	public function home($request, $response)
 	{
-		return $this->app->get("view")->render($response, "home.twig");
+		return $this->container->get("view")->render($response, "home.twig");
 	}
 
 }

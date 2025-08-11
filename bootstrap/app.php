@@ -51,8 +51,16 @@ $container->set("db", function ($app) use ($capsule) {
 });
 
 
+$container->set("auth", function () use ($container) {
+	return new App\Auth\Auth($container);
+});
+
+
 $container->set("view", function ($app) {
-	return Twig::create($app->get("settings")["view"]["template_path"], $app->get("settings")["view"]["twig"]);
+
+	$twig = Twig::create($app->get("settings")["view"]["template_path"], $app->get("settings")["view"]["twig"]);
+
+	return $twig;
 });
 
 $app->add(TwigMiddleware::create($app, $container->get("view")));
@@ -88,7 +96,7 @@ Factory::setDefaultInstance(
         ->withExceptionNamespace('App\\Validation\\Exceptions')
 );
 
-
+// ativar o CSRF
 $app->add("csrf");
 
 

@@ -16,20 +16,36 @@ class AuthController extends Controller {
 
 	public function loginPage($request, $response)
 	{
-		return $this->app->get("view")->render($response, "auth/login.twig");
+		return $this->container->get("view")->render($response, "auth/login.twig");
 
 	}
 
+
+	public function postLogin($request, $response)
+	{
+		$data = $request->getParsedBody();
+		
+		$attemp = $this->container->get("auth")->attemp($data);
+
+		if (!$attemp) {
+			die($this->container->get("auth")->error());
+		}
+
+
+		die("Login efetuado com sucesso!");
+	}
+
+
 	public function registerPage($request, $response)
 	{
-		return $this->app->get("view")->render($response, "auth/register.twig");
+		return $this->container->get("view")->render($response, "auth/register.twig");
 	}
 
 	public function postRegister($request, $response)
 	{
 		$data = $request->getParsedBody();
 
-		$valid = $this->app->get("validation")->validate($request, [
+		$valid = $this->container->get("validation")->validate($request, [
 			"username" => v::noWhitespace()->notEmpty()->length(6, 15)->usernameAvailable(),
 			"email" => v::noWhitespace()->notEmpty()->email()->emailAvailable(),
 			"password" => v::noWhitespace()->notEmpty()->length(8, 15)
