@@ -56,6 +56,19 @@ $container->set("auth", function () use ($container) {
 });
 
 
+
+$container->set("validation", function () {
+	return new App\Validation\Validator();
+});
+
+$container->set("flash", function () {
+	return new Slim\Flash\Messages();
+});
+
+$container->set("csrf", function () use ($responseFactory) {
+	return new Guard($responseFactory);
+});
+
 $container->set("view", function ($container) {
 
 	$twig = Twig::create($container->get("settings")["view"]["template_path"], $container->get("settings")["view"]["twig"]);
@@ -67,19 +80,14 @@ $container->set("view", function ($container) {
 		"user" => $auth->user()
 	]);
 
+	$twig->getEnvironment()->addGlobal("flash", $container->get("flash")->getMessages());
+
 	return $twig;
 });
 
+
+
 $app->add(TwigMiddleware::create($app, $container->get("view")));
-
-
-$container->set("validation", function () {
-	return new App\Validation\Validator();
-});
-
-$container->set("csrf", function () use ($responseFactory) {
-	return new Guard($responseFactory);
-});
 
 
 $container->set("WebController", function ($container) {

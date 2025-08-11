@@ -28,10 +28,11 @@ class AuthController extends Controller {
 		$attemp = $this->container->get("auth")->attemp($data);
 
 		if (!$attemp) {
+			$this->container->get("flash")->addMessage("error", $this->container->get("auth")->error());
 			return redirect($request, $response, "loginPage");
 		}
 
-
+		$this->container->get("flash")->addMessage("success", "Login realizado com sucesso!");
 		return redirect($request, $response, "home");
 	}
 
