@@ -29,6 +29,8 @@ return function (App $app) {
 	$app->group("/user", function (RouteCollectorProxy $group) use ($app) {
 
 		$group->get("/logout", "AuthController:logout")->setName("logout");
-	});
+
+		
+	})->add(new \App\Middleware\AuthMiddleware($app->getContainer()));
 	
 };
