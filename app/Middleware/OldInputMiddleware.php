@@ -1,9 +1,6 @@
 <?php
 
-
-
 namespace App\Middleware;
-
 
 
 use Psr\Http\Message\ResponseInterface as Response;
@@ -12,8 +9,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 
-class ValidationErrorsMiddleware implements MiddlewareInterface {
-
+class OldInputMiddleware implements MiddlewareInterface {
 
 	protected $container;
 
@@ -21,17 +17,14 @@ class ValidationErrorsMiddleware implements MiddlewareInterface {
 		$this->container = $container;
 	}
 
-
 	public function process(Request $request, RequestHandler $handler): Response
 	{
-		if (isset($_SESSION["errors"])) {
-			$this->container->get("view")->getEnvironment()->addGlobal("errors", $_SESSION['errors']);
-			unset($_SESSION['errors']);
-		}
+		$this->container->get("view")->getEnvironment()->addGlobal("old", $_SESSION["old"]);
+		$_SESSION['old'] = $request->getParsedBody();
 
 		$response = $handler->handle($request);
 
-
+		
 
 		return $response;
 	}

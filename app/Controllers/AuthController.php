@@ -30,9 +30,9 @@ class AuthController extends Controller {
 		$data = $request->getParsedBody();
 
 		$valid = $this->app->get("validation")->validate($request, [
-			"username" => v::noWhitespace()->notEmpty()->alpha(),
+			"username" => v::noWhitespace()->notEmpty()->length(6, 15),
 			"email" => v::noWhitespace()->notEmpty()->email(),
-			"password" => v::noWhitespace()->notEmpty()
+			"password" => v::noWhitespace()->notEmpty()->length(8, 15)
 		]);
 
 		if ($valid->failed()) {

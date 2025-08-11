@@ -10,21 +10,21 @@
 <form action="{{ url_for('registerPage') }}" method="post">
 	<div class="mb-3">
 		<label class="form-label">Username</label>
-		<input type="text" class="form-control{% if errors.username %} is-invalid{% endif %}" name="username">
+		<input type="text" class="form-control{% if errors.username %} is-invalid{% endif %}" name="username" value="{{ old.username }}">
 		{% if errors.username %}
 			<div class="invalid-feedback">{{ errors.username | first }}</div>
 		{% endif %}
 	</div>
 	<div class="mb-3">
 		<label class="form-label">Email</label>
-		<input type="email" name="email" class="form-control{% if errors.email %} is-invalid{% endif %}" aria-describedby="emailHelp">
+		<input type="email" name="email" class="form-control{% if errors.email %} is-invalid{% endif %}" aria-describedby="emailHelp" value="{{ old.email }}">
 		{% if errors.email %}
 			<div class="invalid-feedback">{{ errors.email | first }}</div>
 		{% endif %}
 	</div>
 	<div class="mb-3">
 		<label class="form-label">Senha</label>
-		<input type="password" name="password" class="form-control{% if errors.password %} is-invalid{% endif %}">
+		<input type="password" name="password" class="form-control{% if errors.password %} is-invalid{% endif %}" value="{{ old.password }}">
 		{% if errors.password %}
 			<div class="invalid-feedback">{{ errors.password | first }}</div>
 		{% endif %}
