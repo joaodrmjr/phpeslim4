@@ -70,6 +70,11 @@ class Auth {
 		return self::NONE;
 	}
 
+	public function user(): User
+	{
+		return User::find($_SESSION[$this->config["auth_session"]]);
+	}
+
 	public function error()
 	{
 		return $this->error;

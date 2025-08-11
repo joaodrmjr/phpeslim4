@@ -28,11 +28,11 @@ class AuthController extends Controller {
 		$attemp = $this->container->get("auth")->attemp($data);
 
 		if (!$attemp) {
-			die($this->container->get("auth")->error());
+			return redirect($request, $response, "loginPage");
 		}
 
 
-		die("Login efetuado com sucesso!");
+		return redirect($request, $response, "home");
 	}
 
 

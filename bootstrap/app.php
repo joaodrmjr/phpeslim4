@@ -56,9 +56,16 @@ $container->set("auth", function () use ($container) {
 });
 
 
-$container->set("view", function ($app) {
+$container->set("view", function ($container) {
 
-	$twig = Twig::create($app->get("settings")["view"]["template_path"], $app->get("settings")["view"]["twig"]);
+	$twig = Twig::create($container->get("settings")["view"]["template_path"], $container->get("settings")["view"]["twig"]);
+
+	$auth = $container->get("auth");
+
+	$twig->getEnvironment()->addGlobal("auth", [
+		"state" => $auth->check(),
+		"user" => $auth->user()
+	]);
 
 	return $twig;
 });

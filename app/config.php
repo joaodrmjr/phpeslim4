@@ -19,6 +19,8 @@ return function (ContainerInterface $container) {
 
 			],
 
+			"auth_session" => "23fd896ff7970ceba51fadafdf58e23d",
+
 			"db" => [
 				"driver" => "mysql",
 				"host" => "localhost",
