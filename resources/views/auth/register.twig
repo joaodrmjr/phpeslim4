@@ -10,16 +10,24 @@
 <form action="{{ url_for('registerPage') }}" method="post">
 	<div class="mb-3">
 		<label class="form-label">Username</label>
-		<input type="text" class="form-control" name="username">
+		<input type="text" class="form-control{% if errors.username %} is-invalid{% endif %}" name="username">
+		{% if errors.username %}
+			<div class="invalid-feedback">{{ errors.username | first }}</div>
+		{% endif %}
 	</div>
 	<div class="mb-3">
 		<label class="form-label">Email</label>
-		<input type="email" name="email" class="form-control" aria-describedby="emailHelp">
-		<div id="emailHelp" class="form-text">Nunca compartilharemos seu e-mail com mais ninguém.</div>
+		<input type="email" name="email" class="form-control{% if errors.email %} is-invalid{% endif %}" aria-describedby="emailHelp">
+		{% if errors.email %}
+			<div class="invalid-feedback">{{ errors.email | first }}</div>
+		{% endif %}
 	</div>
 	<div class="mb-3">
 		<label class="form-label">Senha</label>
-		<input type="password" name="password" class="form-control">
+		<input type="password" name="password" class="form-control{% if errors.password %} is-invalid{% endif %}">
+		{% if errors.password %}
+			<div class="invalid-feedback">{{ errors.password | first }}</div>
+		{% endif %}
 	</div>
 	<button type="submit" class="btn btn-primary">Submit</button>
 </form>

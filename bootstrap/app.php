@@ -1,6 +1,10 @@
 <?php
 
 
+// inicia a sessao
+session_start();
+
+
 use \DI\Container;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
@@ -58,6 +62,9 @@ $container->set("WebController", function ($container) {
 $container->set("AuthController", function ($container) {
 	return new \App\Controllers\AuthController($container);
 });
+
+$app->add(new App\Middleware\ValidationErrorsMiddleware($container));
+
 
 $routes = require __DIR__ . "/../app/routes.php";
 $routes($app);
