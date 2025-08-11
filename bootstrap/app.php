@@ -47,6 +47,11 @@ $container->set("view", function ($app) {
 $app->add(TwigMiddleware::create($app, $container->get("view")));
 
 
+$container->set("validation", function () {
+	return new App\Validation\Validator();
+});
+
+
 $container->set("WebController", function ($container) {
 	return new \App\Controllers\WebController($container);
 });

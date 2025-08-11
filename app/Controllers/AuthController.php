@@ -7,6 +7,9 @@ use Slim\Routing\RouteContext;
 
 use App\Models\User;
 
+use Respect\Validation\Validator as v;
+use App\Validation\Validator;
+
 
 class AuthController extends Controller {
 
@@ -26,6 +29,15 @@ class AuthController extends Controller {
 	{
 		$data = $request->getParsedBody();
 
+		$valid = $this->app->get("validation")->validate($request, [
+			"username" => v::noWhitespace()->notEmpty()->alpha(),
+			"email" => v::noWhitespace()->notEmpty(),
+			"password" => v::noWhitespace()->notEmpty()
+		]);
+
+		if ($valid->failed()) {
+			return redirect($request, $response, "registerPage");
+		}
 
 		User::create([
 			"username" => $data["username"],
@@ -33,9 +45,7 @@ class AuthController extends Controller {
 			"password" => password_hash($data["password"], PASSWORD_DEFAULT)
 		]);
 
-		$routeParser = RouteContext::fromRequest($request)->getRouteParser();
-		$url = $routeParser->urlFor("registerPage");
-
-		return $response->withHeader('Location', $url)->withStatus(302);
+		
+		return redirect($request, $response, "home");
 	}
 }
