@@ -14,12 +14,21 @@ return function (App $app) {
 	$app->get("/", "WebController:home")->setName("home");
 
 
-	$app->get("/login", "AuthController:loginPage")->setName("loginPage");
-	$app->post("/login", "AuthController:postLogin");
+	$app->group("/auth", function (RouteCollectorProxy $group) use ($app) {
 
-	$app->get("/register", "AuthController:registerPage")->setName("registerPage");
-	$app->post("/register", "AuthController:postRegister");
+		$group->get("/login", "AuthController:loginPage")->setName("loginPage");
+		$group->post("/login", "AuthController:postLogin");
+
+		$group->get("/register", "AuthController:registerPage")->setName("registerPage");
+		$group->post("/register", "AuthController:postRegister");
+
+	})->add(new \App\Middleware\GuestMiddleware($app->getContainer()));
 
 
-	$app->get("/logout", "AuthController:logout")->setName("logout");
+
+	$app->group("/user", function (RouteCollectorProxy $group) use ($app) {
+
+		$group->get("/logout", "AuthController:logout")->setName("logout");
+	});
+	
 };
