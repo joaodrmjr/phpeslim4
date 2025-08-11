@@ -50,6 +50,9 @@ $app->add(TwigMiddleware::create($app, $container->get("view")));
 $container->set("WebController", function ($container) {
 	return new \App\Controllers\WebController($container);
 });
+$container->set("AuthController", function ($container) {
+	return new \App\Controllers\AuthController($container);
+});
 
 $routes = require __DIR__ . "/../app/routes.php";
 $routes($app);
